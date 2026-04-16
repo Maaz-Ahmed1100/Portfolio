@@ -1,0 +1,298 @@
+@import "tailwindcss";
+
+@theme {
+  --color-neon-blue: #00f0ff;
+  --color-neon-green: #39ff14;
+  --color-neon-crimson: #ff003c;
+  --color-neon-purple: #bc13fe;
+  --color-cyber-dark: #0a0a0f;
+  --color-cyber-panel: #0d1117;
+  --color-cyber-border: #1a1f2e;
+  --color-cyber-surface: #161b22;
+  --color-cyber-muted: #8b949e;
+
+  --font-mono: "JetBrains Mono", "Fira Code", "SF Mono", "Cascadia Code",
+    monospace;
+  --font-sans: "Inter", "SF Pro Display", system-ui, -apple-system, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-cyber-dark);
+  color: #e6edf3;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(0, 240, 255, 0.3);
+  color: #fff;
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-cyber-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-neon-blue);
+  border-radius: 3px;
+}
+
+/* ─── CRT Scanline Overlay ─── */
+.crt-overlay {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.03) 0px,
+    rgba(0, 0, 0, 0.03) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  animation: scanline-flicker 0.1s infinite;
+}
+
+@keyframes scanline-flicker {
+  0% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}
+
+/* ─── Glitch Text Effect ─── */
+.glitch-text {
+  position: relative;
+  animation: glitch-skew 4s infinite linear alternate-reverse;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch-text::before {
+  color: var(--color-neon-crimson);
+  animation: glitch-effect 3s infinite linear alternate-reverse;
+  clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+  transform: translate(-2px);
+}
+
+.glitch-text::after {
+  color: var(--color-neon-blue);
+  animation: glitch-effect 2s infinite linear alternate-reverse;
+  clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+  transform: translate(2px);
+}
+
+@keyframes glitch-effect {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-3px, 2px);
+  }
+  40% {
+    transform: translate(-3px, -2px);
+  }
+  60% {
+    transform: translate(3px, 2px);
+  }
+  80% {
+    transform: translate(3px, -2px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+@keyframes glitch-skew {
+  0% {
+    transform: skew(0deg);
+  }
+  2% {
+    transform: skew(-1deg);
+  }
+  4% {
+    transform: skew(0.5deg);
+  }
+  6% {
+    transform: skew(0deg);
+  }
+  100% {
+    transform: skew(0deg);
+  }
+}
+
+/* ─── Glass Card ─── */
+.glass-card {
+  background: rgba(13, 17, 23, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 240, 255, 0.1);
+  border-radius: 12px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(0, 240, 255, 0.4);
+  box-shadow:
+    0 0 20px rgba(0, 240, 255, 0.1),
+    0 0 40px rgba(0, 240, 255, 0.05),
+    inset 0 0 20px rgba(0, 240, 255, 0.02);
+  transform: translateY(-2px) scale(1.01);
+}
+
+/* ─── Neon Glow Utilities ─── */
+.neon-glow-blue {
+  text-shadow:
+    0 0 7px var(--color-neon-blue),
+    0 0 10px var(--color-neon-blue),
+    0 0 21px var(--color-neon-blue);
+}
+
+.neon-glow-green {
+  text-shadow:
+    0 0 7px var(--color-neon-green),
+    0 0 10px var(--color-neon-green),
+    0 0 21px var(--color-neon-green);
+}
+
+/* ─── Decrypt Animation ─── */
+@keyframes decrypt-reveal {
+  0% {
+    filter: blur(8px) brightness(2);
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  50% {
+    filter: blur(2px) brightness(1.5);
+    opacity: 0.7;
+  }
+  100% {
+    filter: blur(0) brightness(1);
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.decrypt-enter {
+  animation: decrypt-reveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ─── Marquee ─── */
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee-scroll 30s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* ─── Game Canvas ─── */
+.game-canvas {
+  image-rendering: pixelated;
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  border-radius: 8px;
+  box-shadow:
+    0 0 30px rgba(0, 240, 255, 0.08),
+    inset 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+/* ─── Bypass Button ─── */
+.bypass-btn {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.bypass-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 240, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.bypass-btn:hover::before {
+  left: 100%;
+}
+
+/* ─── Typing Cursor ─── */
+@keyframes blink-cursor {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.typing-cursor::after {
+  content: "█";
+  animation: blink-cursor 0.8s steps(1) infinite;
+  color: var(--color-neon-blue);
+}
+
+/* ─── Cyber-Grid Canvas ─── */
+.cyber-grid-canvas {
+  image-rendering: pixelated;
+  border: 1px solid rgba(0, 240, 255, 0.15);
+  border-radius: 10px;
+  box-shadow:
+    0 0 40px rgba(0, 240, 255, 0.06),
+    0 0 80px rgba(0, 240, 255, 0.03),
+    inset 0 0 40px rgba(0, 0, 0, 0.4);
+  transition: box-shadow 0.3s ease;
+}
+
+.cyber-grid-canvas:hover {
+  box-shadow:
+    0 0 50px rgba(0, 240, 255, 0.1),
+    0 0 100px rgba(0, 240, 255, 0.05),
+    inset 0 0 40px rgba(0, 0, 0, 0.4);
+}
+
+/* ─── Particle rain background ─── */
+.matrix-rain-container {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.15;
+}
